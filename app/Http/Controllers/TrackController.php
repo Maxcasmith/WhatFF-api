@@ -15,6 +15,8 @@ class TrackController extends Controller
         $games = Game::inRandomOrder()->where('id', '!=', $track->answer_id)->limit(3)->get();
         $games->add(Game::find($track->answer_id));
 
+        $games = $games->shuffle();
+
         return [ 'id' => $track->id, 'file' => $track->path, 'options' => $games ];
     }
 
