@@ -18,6 +18,7 @@ class CreateTracksTable extends Migration
             $table->string('path');
             $table->string('name');
             $table->unsignedBigInteger('answer_id');
+            $table->bigInteger('exp')->default(1);
             $table->timestamps();
 
             $table->foreign('answer_id')->references('id')

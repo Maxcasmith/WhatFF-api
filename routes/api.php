@@ -27,8 +27,10 @@ Route::post('/pages/switch', [PageController::class, 'switch'])->name('pages.swi
 Route::get('/pages', [PageController::class, 'get'])->name('pages.get');
 Route::get('/pages/{page}', [PageController::class, 'getById'])->name('pages.getById');
 
+Route::get('/tracks', [TrackController::class, 'get'])->name('tracks.get');
 Route::get('/music/list/{searchTerm}', [TrackController::class, 'search'])->name('tracks.search');
 Route::post('/tracks/store', [TrackController::class, 'store'])->name('tracks.store');
+Route::post('/tracks/answer', [TrackController::class, 'answer'])->name('tracks.answer');
 
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::post('/register', [UserController::class, 'register'])->name('register');
