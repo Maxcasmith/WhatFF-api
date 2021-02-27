@@ -14,7 +14,11 @@ class TrackController extends Controller
             ->where('id', 'LIKE', '%'.$searchTerm.'%')
             ->orwhere('path', 'LIKE', '%'.$searchTerm.'%')
             ->orwhere('name', 'LIKE', '%'.$searchTerm.'%')
-            // ->orwhere('answer.label', 'LIKE', '%'.$searchTerm.'%')
+            ->orwhere(function ($q) use ($searchTerm) {
+                $q->whereHas('answer', function ($q) use ($searchTerm) {
+                    $q->where('label', 'LIKE', '%'.$searchTerm.'%');
+                });
+            })
             ->get();
     }
 
@@ -22,7 +26,7 @@ class TrackController extends Controller
         foreach($request->files as $track) {
             $uuid = (string) Str::uuid();
 
-            Storage::disk('public')->put($uuid.'.'.$track->getClientOriginalExtension(), $track);
+            Storage::disk('public')->put('tracks/'.$uuid.'.'.$track->getClientOriginalExtension(), $track);
             
             $t = new Track();
             $t->path = $uuid.'.'.$track->getClientOriginalExtension();

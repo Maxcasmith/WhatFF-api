@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Game extends Model
 {
     use HasFactory;
+
+    function tracks() {
+        return $this->hasMany('App\Models\Track');
+    }
 }

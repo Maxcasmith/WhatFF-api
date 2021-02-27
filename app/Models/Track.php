@@ -10,6 +10,6 @@ class Track extends Model
     use HasFactory;
 
     function answer() {
-        return $this->hasOne('App\Models\Game', 'answer_id');
+        return $this->belongsTo('App\Models\Game', 'answer_id');
     }
 }
