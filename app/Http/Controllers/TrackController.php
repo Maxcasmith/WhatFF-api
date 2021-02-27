@@ -22,15 +22,13 @@ class TrackController extends Controller
         foreach($request->files as $track) {
             $uuid = (string) Str::uuid();
 
-            dd($track);
-
-            // Storage::disk('public')->put($uuid.'.mp3', $track);
+            Storage::disk('public')->put($uuid.'.'.$track->getClientOriginalExtension(), $track);
             
-            // $t = new Track();
-            // $t->path = $uuid.'.mp3';
-            // $t->name = $track['name'];
-            // $t->answer_id = $track['answer'];
-            // $t->save();
+            $t = new Track();
+            $t->path = $uuid.'.'.$track->getClientOriginalExtension();
+            $t->name = explode('.', $track->getClientOriginalName())[0];
+            $t->answer_id = $request->answer;
+            $t->save();
         }
 
         return ["status" => 201, "message" => "All tracks uploaded successfully"];
