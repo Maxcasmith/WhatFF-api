@@ -8,6 +8,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Track;
 use App\Models\Game;
+use App\Models\User;
 
 class TrackController extends Controller
 {
@@ -23,9 +24,12 @@ class TrackController extends Controller
 
     function answer(Request $req) {
         $track = Track::find($req->track);
+
+        $user = User::find($req->user);
         
         if ($track->answer_id == $req->answer) {
             //GRANT EXP AND ADAPT ALGORITHM
+            $user->addExp($track->exp);
             return [ 
                 'status' => true,
                 'exp' => $track->exp,

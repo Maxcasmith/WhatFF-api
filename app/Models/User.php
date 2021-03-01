@@ -45,8 +45,18 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'avatar', 'expToNextLevel'
+        'avatar', 'expToNextLevel', 'accumulatedExp'
     ];
+
+    function addExp($exp) {
+        $this->exp += $exp;
+        if ($this->exp >= $this->expToNextLevel) {
+            $this->exp -= ExpChart::getExpByLevel($this->attributes['level'] + 1);
+            $this->level++;
+        }
+        $this->save();
+        return $this;
+    }
 
     function getAvatarAttribute() {
         return Avatar::find($this->attributes['avatar_id']);
@@ -54,5 +64,9 @@ class User extends Authenticatable
     
     function getExpToNextLevelAttribute() {
         return ExpChart::getExpByLevel($this->attributes['level'] + 1);
+    }
+
+    function getAccumulatedExpAttribute() {
+        return ExpChart::getExpByLevel($this->attributes['level']) + $this->attributes['exp'];
     }
 }

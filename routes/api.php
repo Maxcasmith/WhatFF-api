@@ -22,6 +22,7 @@ use App\Http\Controllers\TrackController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/users/{user}', [UserController::class, 'get'])->name('users.get');
 
 Route::post('/pages/switch', [PageController::class, 'switch'])->name('pages.switch');
 Route::get('/pages', [PageController::class, 'get'])->name('pages.get');

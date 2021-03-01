@@ -40,4 +40,8 @@ class UserController extends Controller
 
         return $u;
     }
+
+    function get(User $user) {
+        return $user;
+    }
 }
