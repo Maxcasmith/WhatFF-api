@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Track;
 use App\Models\Game;
@@ -54,13 +55,12 @@ class TrackController extends Controller
     }
 
     function store(Request $request) {
-        foreach($request->files as $track) {
-            $uuid = (string) Str::uuid();
+        foreach($request->files as $name => $track) {
 
-            Storage::disk('public')->put('tracks/'.$uuid.'.'.$track->getClientOriginalExtension(), $track);
+            $fileName = Storage::disk('public')->putFile('tracks', new File($track));
             
             $t = new Track();
-            $t->path = $uuid.'.'.$track->getClientOriginalExtension();
+            $t->path = explode('/', $fileName)[1];
             $t->name = explode('.', $track->getClientOriginalName())[0];
             $t->answer_id = $request->answer;
             $t->save();
